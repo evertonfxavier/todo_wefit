@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Container, Content, Header, IsEmpty, Section } from "./styles";
+import { Container, Content, Header, IsEmpty, List, Section } from "./styles";
 
 interface Task {
   id: number;
@@ -10,16 +10,15 @@ interface Task {
 export const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [handleDelete, setHandleDelete] = useState(Boolean);
 
   const handleCreateNewTask = () => {
-    const idRadom = Number(new Date());
-
     if (newTaskTitle === "") return;
     else {
       setTasks((value) => [
         ...value,
         {
-          id: idRadom,
+          id: Math.floor(Math.random() * Number(new Date())),
           title: newTaskTitle,
         },
       ]);
@@ -44,7 +43,13 @@ export const TaskList = () => {
             onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
-          <button type="submit" onClick={handleCreateNewTask}>
+          <button
+            type="submit"
+            onClick={() => {
+              handleCreateNewTask();
+              setHandleDelete(false);
+            }}
+          >
             <img src="./icons/ic-add.png" alt="add" />
           </button>
         </Header>
@@ -53,17 +58,20 @@ export const TaskList = () => {
           <Content>
             <ul>
               {tasks.map((task) => (
-                <li key={task.id}>
+                <List key={task.id} isDelete={handleDelete}>
                   <p>{task.title}</p>
 
                   <button
                     type="button"
                     data-testid="remove-task-button"
-                    onClick={() => handleRemoveTask(task.id)}
+                    onClick={() => {
+                      handleRemoveTask(task.id);
+                      setHandleDelete(true);
+                    }}
                   >
                     <img src="./icons/ic-delete.png" alt="delete" />
                   </button>
-                </li>
+                </List>
               ))}
             </ul>
           </Content>
