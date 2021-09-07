@@ -1,8 +1,4 @@
-import styled, { keyframes } from "styled-components";
-
-interface FadeProps {
-  isDelete?: boolean;
-}
+import styled from "styled-components";
 
 export const Section = styled.section`
   width: 100%;
@@ -66,62 +62,9 @@ export const Header = styled.header`
   }
 `;
 
-export const appearFromBottom = keyframes`
-  from{
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to{
-    opacity: 1;
-    transform: translateY(0px);
-  }
-`;
-
-export const appearToBottom = keyframes`
-  from{
-    opacity: 1;
-    transform: translateY(0px);
-  }
-  to{
-    opacity: 0;
-    transform: translateY(50px);
-  }
-`;
-
 export const Content = styled.div`
   ul {
     list-style: none;
-  }
-`;
-
-export const List = styled.li<FadeProps>`
-  width: 352px;
-  height: 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 16px;
-  background-color: #eeeeee;
-  margin-bottom: 8px;
-  border-radius: 2px;
-  /* animation: ${appearFromBottom} 0.6s; */
-  animation: ${(props) => (props.isDelete ? appearToBottom : appearFromBottom)}
-    0.6s;
-
-  p {
-    font-size: 14px;
-    color: #606060;
-  }
-
-  button {
-    background: transparent;
-    border: 0;
-    display: flex;
-
-    img {
-      width: 12.44px;
-      height: 16px;
-    }
   }
 `;
 

@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { Container, Content, Header, IsEmpty, Section } from "./styles";
+import { ListItem } from "../ListItem";
 
-import { Container, Content, Header, IsEmpty, List, Section } from "./styles";
-
-interface Task {
+export interface Task {
   id: number;
   title: string;
 }
@@ -10,7 +10,6 @@ interface Task {
 export const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [handleDelete, setHandleDelete] = useState(Boolean);
 
   const handleCreateNewTask = () => {
     if (newTaskTitle === "") return;
@@ -29,8 +28,9 @@ export const TaskList = () => {
 
   const handleRemoveTask = (id: number) => {
     const removeItem = [...tasks].filter((task) => task.id !== id);
-
-    setTasks(removeItem);
+    setTimeout(() => {
+      setTasks(removeItem);
+    }, 600);
   };
 
   return (
@@ -43,13 +43,7 @@ export const TaskList = () => {
             onChange={(e) => setNewTaskTitle(e.target.value)}
             value={newTaskTitle}
           />
-          <button
-            type="submit"
-            onClick={() => {
-              handleCreateNewTask();
-              setHandleDelete(false);
-            }}
-          >
+          <button type="submit" onClick={() => handleCreateNewTask()}>
             <img src="./icons/ic-add.png" alt="add" />
           </button>
         </Header>
@@ -58,20 +52,11 @@ export const TaskList = () => {
           <Content>
             <ul>
               {tasks.map((task) => (
-                <List key={task.id} isDelete={handleDelete}>
-                  <p>{task.title}</p>
-
-                  <button
-                    type="button"
-                    data-testid="remove-task-button"
-                    onClick={() => {
-                      handleRemoveTask(task.id);
-                      setHandleDelete(true);
-                    }}
-                  >
-                    <img src="./icons/ic-delete.png" alt="delete" />
-                  </button>
-                </List>
+                <ListItem
+                  {...task}
+                  key={task.id}
+                  handleRemoveTask={handleRemoveTask}
+                />
               ))}
             </ul>
           </Content>
